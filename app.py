@@ -132,9 +132,18 @@ def _build_snapshot() -> dict[str, Any]:
     drift_delta = drift.get("delta") if isinstance(drift.get("delta"), dict) else {}
     wf_summary = walk.get("summary") if isinstance(walk.get("summary"), dict) else {}
 
+    scanner_available = SCANNER_DIR.exists() and (SCANNER_DIR / "src" / "main.py").exists()
+
     snapshot = {
         "app_display_name": APP_DISPLAY_NAME,
         "public_site_url": PUBLIC_SITE_URL,
+        "scanner_available": scanner_available,
+        "scanner_status_message": (
+            "Live scanning unavailable on this deployment. "
+            "This web service does not include the scanner backend folder."
+            if not scanner_available
+            else "Live scanner backend is available."
+        ),
         "decision": health.get("decision", "unknown"),
         "failure_reasons": health.get("failure_reasons", []),
         "grade_status": (

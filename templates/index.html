@@ -35,6 +35,11 @@
               | generated {{ data.recommendations.generated_at_utc }}
               {% endif %}
             </p>
+            {% if not data.scanner_available %}
+            <p id="scanner-unavailable-note" class="scanner-note">
+              {{ data.scanner_status_message }} You can still view historical recommendations.
+            </p>
+            {% endif %}
           </div>
           <button id="scan-recommendations-btn" class="action-btn">Scan Live Markets</button>
         </div>

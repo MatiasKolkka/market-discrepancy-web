@@ -135,6 +135,14 @@ const renderRecommendations = (items) => {
   mathDetails.innerHTML = items.map(recommendationMath).join("\n");
 };
 
+const scannerAvailable = Boolean((snapshot || {}).scanner_available);
+const scannerStatusMessage = (snapshot || {}).scanner_status_message || "Live scanning is unavailable on this deployment.";
+
+if (scanRecommendationsBtn && !scannerAvailable) {
+  scanRecommendationsBtn.setAttribute("disabled", "true");
+  scanRecommendationsBtn.setAttribute("title", scannerStatusMessage);
+}
+
 const runAction = async (action) => {
   writeActionLog(`Running ${action}...`);
   try {
@@ -304,6 +312,11 @@ renderRecommendations((((snapshot || {}).recommendations || {}).items) || []);
 
 if (scanRecommendationsBtn) {
   scanRecommendationsBtn.addEventListener("click", async () => {
+    if (!scannerAvailable) {
+      writeActionLog(scannerStatusMessage);
+      return;
+    }
+
     scanRecommendationsBtn.setAttribute("disabled", "true");
     writeActionLog("Running live scan for recommendations...");
     try {

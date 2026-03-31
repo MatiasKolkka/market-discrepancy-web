@@ -113,6 +113,15 @@ def _read_json(path: Path) -> dict[str, Any]:
     return payload if isinstance(payload, dict) else {}
 
 
+def _scanner_coverage_hints() -> list[str]:
+    raw = os.getenv(
+        "LIVE_TOPIC_HINTS",
+        "NFL,NBA,MLB,NHL,Oscars,Grammy,Box Office,Bitcoin,Election,AI",
+    )
+    hints = [token.strip() for token in raw.split(",") if token.strip()]
+    return hints[:12]
+
+
 def _minutes_since_iso(ts: str) -> float | None:
     try:
         stamp = datetime.fromisoformat(ts)
@@ -155,6 +164,7 @@ def _build_snapshot() -> dict[str, Any]:
         "app_display_name": APP_DISPLAY_NAME,
         "public_site_url": PUBLIC_SITE_URL,
         "scanner_available": scanner_available,
+        "coverage_hints": _scanner_coverage_hints(),
         "scanner_status_message": (
             "Live scanning unavailable on this deployment. "
             "This web service does not include the scanner backend folder."

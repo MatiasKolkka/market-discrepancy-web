@@ -219,7 +219,7 @@ def _market_quality_block(signal: MarketSignal, settings: Settings) -> str | Non
 
 def _contract_template_block(signal: MarketSignal, settings: Settings) -> str | None:
     parsed = parse_event(signal.event_name, default_symbol=settings.training_symbol)
-    if not parsed.is_price_contract:
+    if not parsed.is_price_contract and not settings.allow_generic_contracts:
         return "Unsupported contract template"
     return None
 
@@ -267,6 +267,28 @@ def _profile_market_payload(raw_markets: list[dict[str, object]]) -> dict[str, o
 def _live_symbol_hints(settings: Settings) -> list[str]:
     raw = settings.live_symbol_hints or ""
     return [token.strip().upper() for token in raw.split(",") if token.strip()]
+
+
+def _live_topic_hints(settings: Settings) -> list[str]:
+    raw = settings.live_topic_hints or ""
+    return [token.strip() for token in raw.split(",") if token.strip()]
+
+
+def _predict_generic_contract(signal: MarketSignal) -> tuple[float, float]:
+    market = max(0.0, min(1.0, float(signal.market_probability)))
+    volume = max(0.0, float(signal.volume or 0.0))
+    open_interest = max(0.0, float(signal.open_interest or 0.0))
+
+    liquidity = min(1.0, (volume + open_interest) / 2500.0)
+    extremeness = abs(market - 0.5) * 2.0
+
+    # Conservative mean-reversion prior for non-price markets.
+    pull_strength = 0.06 + 0.14 * liquidity
+    adjustment = (0.5 - market) * pull_strength
+    model_prob = max(0.01, min(0.99, market + adjustment))
+
+    confidence = max(0.50, min(0.78, 0.50 + 0.18 * liquidity + 0.10 * extremeness))
+    return model_prob, confidence
 
 
 def _reset_portfolio_state(settings: Settings) -> None:
@@ -667,6 +689,8 @@ def _ensure_model(settings: Settings, kalshi: KalshiClient | None = None) -> Non
 def _predict_from_model(signal: MarketSignal, settings: Settings) -> tuple[float, float]:
     parsed = parse_event(signal.event_name, default_symbol=settings.training_symbol)
     if parsed.strike is None or not parsed.is_price_contract:
+        if settings.allow_generic_contracts:
+            return _predict_generic_contract(signal)
         return signal.market_probability, 0.0
 
     if RUNTIME.model is None or not RUNTIME.model.is_fitted:
@@ -803,10 +827,11 @@ def run_once(
     if raw_markets_override is not None:
         raw_markets = [item for item in raw_markets_override if isinstance(item, dict)]
     else:
+        fetch_hints = [*_live_symbol_hints(settings), *_live_topic_hints(settings)]
         raw_markets, fetch_meta = kalshi.fetch_markets_with_fallback(
             limit=settings.live_market_limit,
             symbol_hint=settings.training_symbol,
-            symbol_hints=_live_symbol_hints(settings),
+            symbol_hints=fetch_hints,
         )
         if settings.record_market_snapshots:
             try:

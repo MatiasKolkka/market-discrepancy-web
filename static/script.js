@@ -173,7 +173,7 @@ const runAction = async (action) => {
     ].join("\n");
     writeActionLog(body);
     if (payload.ok) {
-      window.setTimeout(() => window.location.reload(), 500);
+      writeActionLog(`${body}\n\nSnapshot not auto-refreshed. Use Refresh Snapshot when ready.`);
     }
   } catch (error) {
     writeActionLog(`Action failed: ${error}`);

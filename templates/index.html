@@ -22,6 +22,11 @@
         <p class="eyebrow">Signals Platform</p>
         <h1>{{ data.app_display_name }}</h1>
         <p class="subtitle">Actionable market picks in plain language, with advanced math only if you want it.</p>
+        <div class="topic-chips">
+          {% for topic in data.coverage_hints %}
+          <span class="topic-chip">{{ topic }}</span>
+          {% endfor %}
+        </div>
       </header>
 
       <section class="card recommendation-head">

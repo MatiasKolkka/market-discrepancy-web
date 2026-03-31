@@ -72,6 +72,8 @@ class Settings:
     replay_settled_input_path: str = "data/samples/sample_settled_markets.json"
     live_market_limit: int = 200
     live_symbol_hints: str = "SPY,QQQ,IWM,DIA,NDX,SPX"
+    live_topic_hints: str = "NFL,NBA,MLB,NHL,Oscars,Grammy,Box Office,Bitcoin,Election,AI"
+    allow_generic_contracts: bool = True
 
     # Diagnostics.
     diagnostics_report_path: str = "data/diagnostics/latest_report.json"
@@ -159,6 +161,11 @@ def load_settings() -> Settings:
         replay_settled_input_path=os.getenv("REPLAY_SETTLED_INPUT_PATH", "data/samples/sample_settled_markets.json"),
         live_market_limit=int(os.getenv("LIVE_MARKET_LIMIT", "200")),
         live_symbol_hints=os.getenv("LIVE_SYMBOL_HINTS", "SPY,QQQ,IWM,DIA,NDX,SPX"),
+        live_topic_hints=os.getenv(
+            "LIVE_TOPIC_HINTS",
+            "NFL,NBA,MLB,NHL,Oscars,Grammy,Box Office,Bitcoin,Election,AI",
+        ),
+        allow_generic_contracts=_as_bool(os.getenv("ALLOW_GENERIC_CONTRACTS", "true")),
         diagnostics_report_path=os.getenv("DIAGNOSTICS_REPORT_PATH", "data/diagnostics/latest_report.json"),
         source_cascade_report_path=os.getenv("SOURCE_CASCADE_REPORT_PATH", "data/diagnostics/source_cascade_report.json"),
         paper_cycle_report_path=os.getenv("PAPER_CYCLE_REPORT_PATH", "data/diagnostics/paper_cycle_report.json"),

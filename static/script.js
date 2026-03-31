@@ -4,6 +4,9 @@ const actionLog = document.getElementById("action-log");
 const scanRecommendationsBtn = document.getElementById("scan-recommendations-btn");
 const recommendationList = document.getElementById("recommendation-list");
 const mathDetails = document.getElementById("math-details");
+const budgetInput = document.getElementById("budget-input");
+const applyBudgetBtn = document.getElementById("apply-budget-btn");
+const budgetSummary = document.getElementById("budget-summary");
 const tokenInput = document.getElementById("token-input");
 const saveTokenBtn = document.getElementById("save-token-btn");
 const clearTokenBtn = document.getElementById("clear-token-btn");
@@ -38,10 +41,48 @@ if (refreshBtn) {
   });
 }
 
-const actionButtons = Array.from(document.querySelectorAll(".action-btn"));
+const actionButtons = Array.from(document.querySelectorAll("[data-action]"));
 const STORAGE_KEY = "market_scanner_action_token";
+const BUDGET_STORAGE_KEY = "market_scanner_budget_dollars";
+
+let tokenRequired = false;
 
 const getStoredToken = () => localStorage.getItem(STORAGE_KEY) || "";
+
+const clampBudget = (value) => {
+  const amount = Number(value);
+  if (!Number.isFinite(amount) || amount <= 0) {
+    return Number((snapshot || {}).default_budget_dollars || 100);
+  }
+  return Math.max(1, Math.min(100000, Math.round(amount)));
+};
+
+const getBudgetValue = () => {
+  const inputValue = budgetInput ? budgetInput.value : "";
+  const stored = localStorage.getItem(BUDGET_STORAGE_KEY) || "";
+  const raw = (inputValue || stored || String((snapshot || {}).default_budget_dollars || 100)).trim();
+  const budget = clampBudget(raw);
+  if (budgetInput) {
+    budgetInput.value = String(budget);
+  }
+  localStorage.setItem(BUDGET_STORAGE_KEY, String(budget));
+  return budget;
+};
+
+const setScanButtonState = (enabled, title = "") => {
+  if (!scanRecommendationsBtn) {
+    return;
+  }
+  if (enabled) {
+    scanRecommendationsBtn.removeAttribute("disabled");
+    scanRecommendationsBtn.removeAttribute("title");
+  } else {
+    scanRecommendationsBtn.setAttribute("disabled", "true");
+    if (title) {
+      scanRecommendationsBtn.setAttribute("title", title);
+    }
+  }
+};
 
 const setAuthStatusText = (text) => {
   if (authStatus) {
@@ -69,22 +110,30 @@ const initTokenUi = async () => {
     const res = await fetch("/api/auth/status");
     const auth = await res.json();
     const required = Boolean(auth.token_required);
+    tokenRequired = required;
     if (!required) {
       setAuthStatusText("Auth: open mode");
       updateActionButtons(true);
-      return;
+      setScanButtonState(scannerAvailable, scannerStatusMessage);
+      return auth;
     }
 
     if (token) {
       setAuthStatusText("Auth: operator token loaded");
       updateActionButtons(true);
+      setScanButtonState(scannerAvailable, scannerStatusMessage);
     } else {
       setAuthStatusText("Auth: token required");
       updateActionButtons(false);
+      if (scannerAvailable) {
+        setScanButtonState(false, "Operator token required to scan live markets.");
+      }
     }
+    return auth;
   } catch (error) {
     console.error(error);
     setAuthStatusText("Auth: status unavailable");
+    return null;
   }
 };
 
@@ -135,13 +184,56 @@ const renderRecommendations = (items) => {
   mathDetails.innerHTML = items.map(recommendationMath).join("\n");
 };
 
+const updateBudgetSummary = (recommendations) => {
+  if (!budgetSummary || !recommendations) {
+    return;
+  }
+  const budget = Number(recommendations.budget_dollars || getBudgetValue() || 0);
+  const spent = Number(recommendations.budget_spent_dollars || 0);
+  const remaining = Number(recommendations.budget_remaining_dollars || Math.max(0, budget - spent));
+  budgetSummary.textContent = `Budget: $${budget.toFixed(2)} | Allocated: $${spent.toFixed(2)} | Remaining: $${remaining.toFixed(2)}`;
+};
+
 const scannerAvailable = Boolean((snapshot || {}).scanner_available);
 const scannerStatusMessage = (snapshot || {}).scanner_status_message || "Live scanning is unavailable on this deployment.";
 
 if (scanRecommendationsBtn && !scannerAvailable) {
-  scanRecommendationsBtn.setAttribute("disabled", "true");
-  scanRecommendationsBtn.setAttribute("title", scannerStatusMessage);
+  setScanButtonState(false, scannerStatusMessage);
 }
+
+const fetchRecommendations = async ({ runScan }) => {
+  const budget = getBudgetValue();
+  const token = getStoredToken();
+
+  if (runScan) {
+    const headers = { "Content-Type": "application/json" };
+    if (token) {
+      headers["X-Action-Token"] = token;
+    }
+
+    const response = await fetch("/api/recommendations/scan", {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ budget_dollars: budget }),
+    });
+    const payload = await response.json();
+    if (!response.ok || !payload.ok) {
+      throw new Error(payload.error || `HTTP ${response.status}`);
+    }
+    const recs = payload.recommendations || {};
+    renderRecommendations(recs.items || []);
+    updateBudgetSummary(recs);
+    return;
+  }
+
+  const response = await fetch(`/api/recommendations?limit=6&budget_dollars=${encodeURIComponent(String(budget))}`);
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}`);
+  }
+  const recs = await response.json();
+  renderRecommendations(recs.items || []);
+  updateBudgetSummary(recs);
+};
 
 const runAction = async (action) => {
   writeActionLog(`Running ${action}...`);
@@ -307,8 +399,22 @@ const renderCharts = () => {
 };
 
 renderCharts();
-initTokenUi();
 renderRecommendations((((snapshot || {}).recommendations || {}).items) || []);
+updateBudgetSummary((snapshot || {}).recommendations || {});
+
+if (applyBudgetBtn) {
+  applyBudgetBtn.addEventListener("click", async () => {
+    applyBudgetBtn.setAttribute("disabled", "true");
+    try {
+      await fetchRecommendations({ runScan: false });
+      writeActionLog("Budget applied to latest recommendations.");
+    } catch (error) {
+      writeActionLog(`Failed applying budget: ${error}`);
+    } finally {
+      applyBudgetBtn.removeAttribute("disabled");
+    }
+  });
+}
 
 if (scanRecommendationsBtn) {
   scanRecommendationsBtn.addEventListener("click", async () => {
@@ -316,26 +422,15 @@ if (scanRecommendationsBtn) {
       writeActionLog(scannerStatusMessage);
       return;
     }
+    if (tokenRequired && !getStoredToken()) {
+      writeActionLog("Operator token required before running live scan.");
+      return;
+    }
 
     scanRecommendationsBtn.setAttribute("disabled", "true");
     writeActionLog("Running live scan for recommendations...");
     try {
-      const token = getStoredToken();
-      const headers = { "Content-Type": "application/json" };
-      if (token) {
-        headers["X-Action-Token"] = token;
-      }
-      const response = await fetch("/api/recommendations/scan", {
-        method: "POST",
-        headers,
-        body: JSON.stringify({}),
-      });
-      const payload = await response.json();
-      if (!response.ok || !payload.ok) {
-        throw new Error(payload.error || `HTTP ${response.status}`);
-      }
-      const recs = (payload.recommendations || {}).items || [];
-      renderRecommendations(recs);
+      await fetchRecommendations({ runScan: true });
       writeActionLog("Scan complete. Recommendations updated.");
     } catch (error) {
       writeActionLog(`Recommendation scan failed: ${error}`);
@@ -344,3 +439,27 @@ if (scanRecommendationsBtn) {
     }
   });
 }
+
+const initializePage = async () => {
+  getBudgetValue();
+  const auth = await initTokenUi();
+
+  if (!scannerAvailable) {
+    return;
+  }
+
+  if (auth && auth.token_required && !getStoredToken()) {
+    writeActionLog("Live auto-scan skipped: save operator token to fetch fresh bets on load.");
+    return;
+  }
+
+  try {
+    writeActionLog("Running automatic live scan for fresh bets...");
+    await fetchRecommendations({ runScan: true });
+    writeActionLog("Auto-scan complete. Fresh bets loaded.");
+  } catch (error) {
+    writeActionLog(`Auto-scan failed: ${error}`);
+  }
+};
+
+initializePage();

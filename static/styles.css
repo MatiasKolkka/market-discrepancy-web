@@ -131,6 +131,30 @@ body {
   gap: 1rem;
 }
 
+.scan-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.budget-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+#budget-input {
+  width: 105px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  padding: 0.48rem 0.72rem;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--ink);
+  font-weight: 700;
+}
+
 .hint,
 .label {
   margin: 0.22rem 0;

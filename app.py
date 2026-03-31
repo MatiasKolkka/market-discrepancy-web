@@ -46,6 +46,7 @@ REPORT_FILES = {
     "recommendations": DIAG_DIR / "recommendations_report.json",
 }
 RECOMMENDATIONS_MAX_AGE_MINUTES = int(os.getenv("RECOMMENDATIONS_MAX_AGE_MINUTES", "240"))
+DEFAULT_BUDGET_DOLLARS = float(os.getenv("DEFAULT_BUDGET_DOLLARS", "100"))
 
 ALLOWED_ACTIONS: dict[str, dict[str, Any]] = {
     "scan-once": {"mode": "scan-once", "flags": []},
@@ -131,6 +132,58 @@ def _minutes_since_iso(ts: str) -> float | None:
         stamp = stamp.replace(tzinfo=timezone.utc)
     age = datetime.now(timezone.utc) - stamp.astimezone(timezone.utc)
     return max(0.0, age.total_seconds() / 60.0)
+
+
+def _parse_budget(raw: str | None, default: float | None = None) -> float | None:
+    if raw is None:
+        return default
+    text = str(raw).strip()
+    if not text:
+        return default
+    try:
+        amount = float(text)
+    except ValueError:
+        return default
+    if amount <= 0:
+        return default
+    return max(1.0, min(100000.0, amount))
+
+
+def _apply_budget(items: list[dict[str, Any]], budget_dollars: float | None) -> tuple[list[dict[str, Any]], float]:
+    if budget_dollars is None:
+        return items, sum(float(item.get("estimated_cost_dollars", 0.0) or 0.0) for item in items)
+
+    remaining = float(budget_dollars)
+    spent = 0.0
+    budgeted: list[dict[str, Any]] = []
+
+    for item in items:
+        qty = int(item.get("quantity", 0) or 0)
+        est_cost = float(item.get("estimated_cost_dollars", 0.0) or 0.0)
+        if qty <= 0 or est_cost <= 0.0:
+            continue
+
+        per_contract = est_cost / max(1, qty)
+        max_affordable = int(remaining // max(0.0001, per_contract))
+        if max_affordable <= 0:
+            continue
+
+        new_qty = min(qty, max_affordable)
+        scale = float(new_qty) / float(qty)
+        new_cost = round(per_contract * new_qty, 2)
+
+        updated = dict(item)
+        updated["quantity"] = new_qty
+        updated["estimated_cost_dollars"] = new_cost
+        updated["estimated_value_dollars"] = round(float(item.get("estimated_value_dollars", 0.0) or 0.0) * scale, 2)
+        budgeted.append(updated)
+
+        spent += new_cost
+        remaining = max(0.0, remaining - new_cost)
+        if remaining < per_contract:
+            break
+
+    return budgeted, round(spent, 2)
 
 
 def _build_snapshot() -> dict[str, Any]:
@@ -306,7 +359,7 @@ def _build_recommendations_from_logs(limit: int = 8) -> dict[str, Any]:
     }
 
 
-def _build_recommendations(limit: int = 8) -> dict[str, Any]:
+def _build_recommendations(limit: int = 8, budget_dollars: float | None = None) -> dict[str, Any]:
     report = _read_json(REPORT_FILES["recommendations"])
     if report:
         items = report.get("items") if isinstance(report.get("items"), list) else []
@@ -319,19 +372,33 @@ def _build_recommendations(limit: int = 8) -> dict[str, Any]:
                 continue
             normalized.append(row)
 
+        budgeted, spent = _apply_budget(normalized, budget_dollars)
+        budget_value = budget_dollars if budget_dollars is not None else spent
         return {
-            "count": len(normalized),
-            "items": normalized,
+            "count": len(budgeted),
+            "items": budgeted,
             "generated_at_utc": generated,
             "age_minutes": age_mins,
             "is_fresh": is_fresh,
+            "budget_dollars": round(float(budget_value), 2),
+            "budget_spent_dollars": spent,
+            "budget_remaining_dollars": round(max(0.0, float(budget_value) - spent), 2),
             "source_kind": "recommendations_report",
             "source": {
                 "recommendations_path": str(REPORT_FILES["recommendations"].relative_to(SCANNER_DIR)),
             },
         }
 
-    return _build_recommendations_from_logs(limit=limit)
+    fallback = _build_recommendations_from_logs(limit=limit)
+    fallback_items = fallback.get("items") if isinstance(fallback.get("items"), list) else []
+    budgeted, spent = _apply_budget(fallback_items, budget_dollars)
+    budget_value = budget_dollars if budget_dollars is not None else spent
+    fallback["items"] = budgeted
+    fallback["count"] = len(budgeted)
+    fallback["budget_dollars"] = round(float(budget_value), 2)
+    fallback["budget_spent_dollars"] = spent
+    fallback["budget_remaining_dollars"] = round(max(0.0, float(budget_value) - spent), 2)
+    return fallback
 
 
 def _run_scanner_action(action: str, settled_file: str | None = None) -> dict[str, Any]:
@@ -387,7 +454,9 @@ app = Flask(__name__)
 @app.get("/")
 def index() -> str:
     data = _build_snapshot()
-    data["recommendations"] = _build_recommendations(limit=6)
+    budget = _parse_budget(request.args.get("budget_dollars"), default=DEFAULT_BUDGET_DOLLARS)
+    data["default_budget_dollars"] = round(float(budget or DEFAULT_BUDGET_DOLLARS), 2)
+    data["recommendations"] = _build_recommendations(limit=6, budget_dollars=budget)
     data["app_display_name"] = APP_DISPLAY_NAME
     data["public_site_url"] = PUBLIC_SITE_URL
     return render_template("index.html", data=data)
@@ -396,7 +465,9 @@ def index() -> str:
 @app.get("/api/snapshot")
 def api_snapshot() -> Any:
     out = _build_snapshot()
-    out["recommendations"] = _build_recommendations(limit=6)
+    budget = _parse_budget(request.args.get("budget_dollars"), default=DEFAULT_BUDGET_DOLLARS)
+    out["default_budget_dollars"] = round(float(budget or DEFAULT_BUDGET_DOLLARS), 2)
+    out["recommendations"] = _build_recommendations(limit=6, budget_dollars=budget)
     return jsonify(out)
 
 
@@ -444,7 +515,8 @@ def api_recommendations() -> Any:
         limit = max(1, min(20, int(limit_raw)))
     except ValueError:
         limit = 6
-    return jsonify(_build_recommendations(limit=limit))
+    budget = _parse_budget(request.args.get("budget_dollars"), default=DEFAULT_BUDGET_DOLLARS)
+    return jsonify(_build_recommendations(limit=limit, budget_dollars=budget))
 
 
 @app.post("/api/recommendations/scan")
@@ -452,12 +524,19 @@ def api_recommendations_scan() -> Any:
     if not _is_action_authorized():
         return jsonify({"ok": False, "error": "Unauthorized action request"}), 401
 
+    payload = request.get_json(silent=True)
+    budget = None
+    if isinstance(payload, dict):
+        budget = _parse_budget(payload.get("budget_dollars"), default=None)
+    if budget is None:
+        budget = DEFAULT_BUDGET_DOLLARS
+
     run = _run_scanner_action(action="scan-once")
     status = 200 if run.get("ok") else 400
     payload = {
         "ok": bool(run.get("ok")),
         "run": run,
-        "recommendations": _build_recommendations(limit=6),
+        "recommendations": _build_recommendations(limit=6, budget_dollars=budget),
     }
     return jsonify(payload), status
 

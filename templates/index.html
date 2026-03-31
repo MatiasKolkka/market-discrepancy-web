@@ -40,13 +40,23 @@
               | generated {{ data.recommendations.generated_at_utc }}
               {% endif %}
             </p>
+            <p id="budget-summary" class="hint small">
+              Budget: ${{ '%.2f'|format(data.recommendations.budget_dollars or data.default_budget_dollars) }}
+              | Allocated: ${{ '%.2f'|format(data.recommendations.budget_spent_dollars or 0.0) }}
+              | Remaining: ${{ '%.2f'|format(data.recommendations.budget_remaining_dollars or 0.0) }}
+            </p>
             {% if not data.scanner_available %}
             <p id="scanner-unavailable-note" class="scanner-note">
               {{ data.scanner_status_message }} You can still view historical recommendations.
             </p>
             {% endif %}
           </div>
-          <button id="scan-recommendations-btn" class="action-btn">Scan Live Markets</button>
+          <div class="scan-controls">
+            <label for="budget-input" class="budget-label">Budget ($)</label>
+            <input id="budget-input" type="number" min="1" step="1" value="{{ '%.0f'|format(data.default_budget_dollars or 100) }}" />
+            <button id="apply-budget-btn" class="action-btn" type="button">Apply Budget</button>
+            <button id="scan-recommendations-btn" class="action-btn" type="button">Scan Live Markets</button>
+          </div>
         </div>
       </section>
 

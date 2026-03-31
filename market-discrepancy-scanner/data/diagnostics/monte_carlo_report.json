@@ -1,0 +1,103 @@
+{
+  "generated_at_utc": "2026-03-31T02:10:26.850847+00:00",
+  "seed": 42,
+  "trials": 2000,
+  "empirical_trade_count": 3,
+  "empirical_mean_trade_pnl": 5.669999999999999,
+  "empirical_std_trade_pnl": 18.108375594367008,
+  "empirical_win_rate": 0.6666666666666666,
+  "bootstrap_ci95_mean_trade_pnl": {
+    "lower": -19.71,
+    "upper": 21.32
+  },
+  "warning": "Low settled trade count (<30): Monte Carlo uncertainty is high.",
+  "grading": {
+    "eligible": false,
+    "required_min_settled_trades": 50,
+    "health_pass_score_threshold": 0.75,
+    "min_positive_prob_at_max_n": 0.6,
+    "max_sample_size_evaluated": 1000,
+    "checks": {
+      "mean_positive": true,
+      "ci95_lower_positive": false,
+      "win_rate_at_least_half": true,
+      "positive_prob_at_max_n": true
+    },
+    "health_score": 0.75,
+    "status": "insufficient_data"
+  },
+  "convergence": [
+    {
+      "sample_size": 10.0,
+      "mean_of_means": 5.900913999999999,
+      "std_of_means": 5.6905770315148185,
+      "abs_error_vs_empirical_mean": 0.23091400000000029,
+      "prob_total_pnl_positive": 0.825,
+      "p05_total_pnl": -44.82000000000001,
+      "p50_total_pnl": 66.42999999999998,
+      "p95_total_pnl": 148.49
+    },
+    {
+      "sample_size": 25.0,
+      "mean_of_means": 5.6083834,
+      "std_of_means": 3.592646248497678,
+      "abs_error_vs_empirical_mean": 0.06161659999999891,
+      "prob_total_pnl_positive": 0.9375,
+      "p05_total_pnl": -6.72000000000002,
+      "p50_total_pnl": 139.64,
+      "p95_total_pnl": 291.91999999999996
+    },
+    {
+      "sample_size": 50.0,
+      "mean_of_means": 5.6289671,
+      "std_of_means": 2.612135438383238,
+      "abs_error_vs_empirical_mean": 0.04103289999999937,
+      "prob_total_pnl_positive": 0.9805,
+      "p05_total_pnl": 62.69999999999997,
+      "p50_total_pnl": 285.19999999999993,
+      "p95_total_pnl": 484.42999999999995
+    },
+    {
+      "sample_size": 100.0,
+      "mean_of_means": 5.665641399999998,
+      "std_of_means": 1.7940226857473236,
+      "abs_error_vs_empirical_mean": 0.004358600000000656,
+      "prob_total_pnl_positive": 0.9995,
+      "p05_total_pnl": 266.6599999999999,
+      "p50_total_pnl": 570.81,
+      "p95_total_pnl": 858.0199999999998
+    },
+    {
+      "sample_size": 250.0,
+      "mean_of_means": 5.698037119999999,
+      "std_of_means": 1.1632528680632193,
+      "abs_error_vs_empirical_mean": 0.028037119999999582,
+      "prob_total_pnl_positive": 1.0,
+      "p05_total_pnl": 940.7899999999997,
+      "p50_total_pnl": 1421.7199999999998,
+      "p95_total_pnl": 1895.9099999999996
+    },
+    {
+      "sample_size": 500.0,
+      "mean_of_means": 5.700160609999998,
+      "std_of_means": 0.7969682705120874,
+      "abs_error_vs_empirical_mean": 0.030160609999999366,
+      "prob_total_pnl_positive": 1.0,
+      "p05_total_pnl": 2186.294999999999,
+      "p50_total_pnl": 2854.869999999999,
+      "p95_total_pnl": 3498.3414999999995
+    },
+    {
+      "sample_size": 1000.0,
+      "mean_of_means": 5.658779014999999,
+      "std_of_means": 0.5804554267861399,
+      "abs_error_vs_empirical_mean": 0.01122098500000046,
+      "prob_total_pnl_positive": 1.0,
+      "p05_total_pnl": 4722.594499999999,
+      "p50_total_pnl": 5661.7649999999985,
+      "p95_total_pnl": 6593.430499999999
+    }
+  ],
+  "mode": "journal",
+  "paper_trades_path": "data/paper_trades.jsonl"
+}

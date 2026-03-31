@@ -1,0 +1,69 @@
+{
+  "generated_at_utc": "2026-03-31T02:53:19.506741+00:00",
+  "count": 3,
+  "items": [
+    {
+      "ticker": "SPY-EXAMPLE-ABOVE",
+      "event_name": "Will SPY close above 550 this week?",
+      "instruction": "Bet YES on Will SPY close above 550 this week?",
+      "side": "buy_yes",
+      "quantity": 41,
+      "estimated_cost_dollars": 19.68,
+      "estimated_value_dollars": 20.3,
+      "market_probability": 0.48,
+      "model_probability": 1.0,
+      "net_edge": 0.495,
+      "confidence": 1.0,
+      "spread_probability": 0.02,
+      "volume": 120,
+      "score": 83.8,
+      "math": {
+        "edge_formula": "net_edge = (model_probability - market_probability) - costs",
+        "cost_formula": "estimated_cost = quantity * entry_price",
+        "ev_formula": "estimated_value = |net_edge| * quantity"
+      }
+    },
+    {
+      "ticker": "QQQ-EXAMPLE-BELOW",
+      "event_name": "Will QQQ close below 430 this week?",
+      "instruction": "Bet NO on Will QQQ close below 430 this week?",
+      "side": "buy_no",
+      "quantity": 35,
+      "estimated_cost_dollars": 19.6,
+      "estimated_value_dollars": 14.35,
+      "market_probability": 0.44,
+      "model_probability": 0.0,
+      "net_edge": -0.41,
+      "confidence": 1.0,
+      "spread_probability": 0.03,
+      "volume": 95,
+      "score": 74.05,
+      "math": {
+        "edge_formula": "net_edge = (model_probability - market_probability) - costs",
+        "cost_formula": "estimated_cost = quantity * entry_price",
+        "ev_formula": "estimated_value = |net_edge| * quantity"
+      }
+    },
+    {
+      "ticker": "SPY-EXAMPLE-RANGE",
+      "event_name": "Will SPY close between 540 and 560 this week?",
+      "instruction": "Bet NO on Will SPY close between 540 and 560 this week?",
+      "side": "buy_no",
+      "quantity": 27,
+      "estimated_cost_dollars": 19.71,
+      "estimated_value_dollars": 6.48,
+      "market_probability": 0.27,
+      "model_probability": 0.0,
+      "net_edge": -0.24,
+      "confidence": 1.0,
+      "spread_probability": 0.03,
+      "volume": 88,
+      "score": 56.77,
+      "math": {
+        "edge_formula": "net_edge = (model_probability - market_probability) - costs",
+        "cost_formula": "estimated_cost = quantity * entry_price",
+        "ev_formula": "estimated_value = |net_edge| * quantity"
+      }
+    }
+  ]
+}

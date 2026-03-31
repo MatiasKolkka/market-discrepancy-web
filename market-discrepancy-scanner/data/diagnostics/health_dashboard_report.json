@@ -1,0 +1,47 @@
+{
+  "generated_at_utc": "2026-03-31T02:10:26.862003+00:00",
+  "decision": "no-go",
+  "checks": {
+    "grade_status_pass": false,
+    "drift_not_detected": true,
+    "settled_walk_forward_available": false
+  },
+  "failure_reasons": [
+    "grade_status=insufficient_data",
+    "settled_walk_forward_status=insufficient_data"
+  ],
+  "refresh_errors": [
+    "drift_refresh_failed: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=600&event_status=settled (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1081)')))"
+  ],
+  "inputs": {
+    "monte_carlo_report_path": "data/diagnostics/monte_carlo_report.json",
+    "drift_report_path": "data/diagnostics/drift_report.json",
+    "settled_walk_forward_report_path": "data/diagnostics/settled_walk_forward_report.json",
+    "unrealized_pnl_report_path": "data/diagnostics/unrealized_pnl_report.json"
+  },
+  "snapshot": {
+    "monte_carlo": {
+      "empirical_trade_count": 3,
+      "empirical_mean_trade_pnl": 5.669999999999999,
+      "grade_status": "insufficient_data",
+      "grade_score": 0.75
+    },
+    "drift": {
+      "drift_detected": false,
+      "recommended_mode": "insufficient_data"
+    },
+    "settled_walk_forward": {
+      "status": "insufficient_data",
+      "summary": {
+        "fold_count": 0,
+        "mean_brier": 0.0,
+        "mean_log_loss": 0.0,
+        "mean_ece": 0.0
+      }
+    },
+    "unrealized": {
+      "open_positions": 0,
+      "total_unrealized_pnl_dollars": 0.0
+    }
+  }
+}

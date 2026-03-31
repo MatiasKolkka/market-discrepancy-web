@@ -1,0 +1,40 @@
+{
+  "generated_at_utc": "2026-03-31T02:01:45.519966+00:00",
+  "archive": {
+    "archive_path": "data/labels/settled_markets_archive.json",
+    "added_rows": 0,
+    "total_rows": 3,
+    "source": "file"
+  },
+  "drift": {
+    "drift_detected": false,
+    "recommended_mode": "insufficient_data"
+  },
+  "settled_walk_forward": {
+    "status": "insufficient_data",
+    "rows": 1,
+    "summary": {
+      "fold_count": 0,
+      "mean_brier": 0.0,
+      "mean_log_loss": 0.0,
+      "mean_ece": 0.0
+    }
+  },
+  "monte_carlo": {
+    "error": null,
+    "empirical_trade_count": 3,
+    "grade_status": "insufficient_data",
+    "grade_score": 0.75
+  },
+  "health_dashboard": {
+    "decision": "no-go",
+    "failure_reasons": [
+      "grade_status=insufficient_data",
+      "settled_walk_forward_status=insufficient_data"
+    ]
+  },
+  "next_targets": {
+    "additional_settled_trades_for_grade": 47,
+    "additional_settled_rows_for_walk_forward": 249
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "timestamp_utc": "2026-03-30T16:07:14.804138+00:00",
+  "scanned": 200,
+  "blocked": 200,
+  "passed": 0,
+  "by_reason": {
+    "Unsupported contract template": 200
+  },
+  "examples_by_reason": {
+    "Unsupported contract template": [
+      {
+        "ticker": "KXMVECROSSCATEGORY-S20260E7F134622D-FF94D3EFBC4",
+        "event_name": "yes Kris Bubic: 4+,yes Simeon Woods Richardson: 3+,yes Chris Bassitt: 4+,yes Jack Leiter: 4+,yes Davis Martin: 3+,yes Chris Paddack: 3+,yes Chase Burns: 5+,yes Braxton Ashcraft: 4+,yes Taijuan Walker: 3+,yes Foster Griffin: 3+,yes Tomoyuki Sugano: 3+,yes Cody Ponce: 4+,yes Jacob Lopez: 3+,yes Bryce Elder: 3+"
+      },
+      {
+        "ticker": "KXMVECROSSCATEGORY-S20262392F37A787-7CCAE7C0A9E",
+        "event_name": "yes Over 234.5 points scored,yes UConn,yes Arizona,yes Arkansas St.,yes Marshall,yes Texas"
+      },
+      {
+        "ticker": "KXMVESPORTSMULTIGAMEEXTENDED-S20267BA46D7EBBF-0F0505DC4E8",
+        "event_name": "yes Philadelphia,yes Victor Wembanyama: 20+,yes Tyrese Maxey: 25+"
+      },
+      {
+        "ticker": "KXMVESPORTSMULTIGAMEEXTENDED-S2026D54B1B993F7-2651B6F3825",
+        "event_name": "yes Toronto,yes Milwaukee,yes New York M,yes Los Angeles D,yes Jayson Tatum: 20+,yes Victor Wembanyama: 20+,yes Jalen Williams: 10+,yes Shai Gilgeous-Alexander: 20+,yes Grayson Allen: 10+,yes Austin Reaves: 20+"
+      },
+      {
+        "ticker": "KXMVESPORTSMULTIGAMEEXTENDED-S2026F8F3F974A92-28A5FCF6977",
+        "event_name": "yes James Harden: 2+,yes Shai Gilgeous-Alexander: 1+,yes LeBron James: 6+,yes Boston,yes Los Angeles L,yes Jayson Tatum: 20+,yes Donovan Mitchell: 20+,yes Shai Gilgeous-Alexander: 25+,yes LeBron James: 20+,yes Cleveland wins by over 5.5 Points,yes Oklahoma City wins by over 2.5 Points"
+      }
+    ]
+  },
+  "metadata": {
+    "fetch": {
+      "attempts": [
+        {
+          "params": {
+            "limit": 200
+          },
+          "count": 200,
+          "error": null
+        }
+      ],
+      "selected_params": {
+        "limit": 200
+      }
+    },
+    "payload_profile": {
+      "raw_total": 200,
+      "with_ticker": 200,
+      "with_title": 200,
+      "with_yes_price_like": 200,
+      "with_yes_bid_like": 0,
+      "with_yes_ask_like": 0,
+      "with_yes_bid_dollars": 200,
+      "with_yes_ask_dollars": 200
+    },
+    "signal_candidates": 200
+  }
+}

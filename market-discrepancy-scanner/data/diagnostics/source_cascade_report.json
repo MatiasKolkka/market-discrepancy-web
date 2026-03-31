@@ -1,0 +1,29 @@
+{
+  "generated_at_utc": "2026-03-31T01:19:04.363568+00:00",
+  "training_symbol": "SPY",
+  "requested_hints": [
+    "SPY",
+    "QQQ",
+    "IWM",
+    "DIA",
+    "NDX",
+    "SPX"
+  ],
+  "attempt_count": 1,
+  "best_attempt_index": 0,
+  "best_pre_score_pass": 3,
+  "sources": [
+    {
+      "params": {
+        "mode": "file",
+        "input_file": "data\\samples\\sample_markets.json"
+      },
+      "raw_count": 3,
+      "signal_candidates": 3,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 3,
+      "error": null
+    }
+  ]
+}

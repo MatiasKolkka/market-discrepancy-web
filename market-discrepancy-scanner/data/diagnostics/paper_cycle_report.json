@@ -1,0 +1,14 @@
+{
+  "generated_at_utc": "2026-03-31T01:23:38.218341+00:00",
+  "summary": {
+    "markets_scanned": 3,
+    "alerts": 3,
+    "opened_paper_positions": 3,
+    "reconciled_closed_positions": 3,
+    "reconciled_realized_pnl_dollars": 17.01,
+    "portfolio_bankroll_dollars": 5017.009999999999,
+    "portfolio_used_cash_dollars": 0.0,
+    "market_file": "data\\samples\\sample_markets.json",
+    "settled_file": "data\\samples\\sample_settled_markets.json"
+  }
+}

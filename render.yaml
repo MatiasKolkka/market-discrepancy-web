@@ -11,6 +11,8 @@ services:
         sync: false
       - key: SCANNER_PYTHON
         value: /opt/render/project/src/.venv/bin/python
+      - key: SCANNER_DIR
+        value: /opt/render/project/src/market-discrepancy-scanner
       - key: APP_DISPLAY_NAME
         value: Market Scanner Signals
       - key: PUBLIC_SITE_URL

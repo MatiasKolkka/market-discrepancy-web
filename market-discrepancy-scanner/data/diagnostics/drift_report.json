@@ -1,0 +1,8 @@
+{
+  "generated_at_utc": "2026-03-31T02:01:45.441505+00:00",
+  "drift_detected": false,
+  "reason": "insufficient_rows",
+  "recommended_mode": "insufficient_data",
+  "rows": 1,
+  "source": "archive"
+}

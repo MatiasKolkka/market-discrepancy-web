@@ -1,0 +1,12 @@
+{
+  "generated_at_utc": "2026-03-31T02:01:45.442898+00:00",
+  "rows": 1,
+  "status": "insufficient_data",
+  "summary": {
+    "fold_count": 0,
+    "mean_brier": 0.0,
+    "mean_log_loss": 0.0,
+    "mean_ece": 0.0
+  },
+  "source": "archive"
+}

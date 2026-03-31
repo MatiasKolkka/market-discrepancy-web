@@ -1,0 +1,29 @@
+{
+  "updated_at_utc": "2026-03-31T02:53:19.505818+00:00",
+  "positions": [
+    {
+      "ticker": "SPY-EXAMPLE-ABOVE",
+      "side": "buy_yes",
+      "quantity": 39,
+      "entry_probability": 0.48070284191794427,
+      "entry_cost_dollars": 18.747410834799826,
+      "opened_at_utc": "2026-03-31T02:53:19.270755+00:00"
+    },
+    {
+      "ticker": "QQQ-EXAMPLE-BELOW",
+      "side": "buy_no",
+      "quantity": 31,
+      "entry_probability": 0.5683154815349378,
+      "entry_cost_dollars": 17.617779927583072,
+      "opened_at_utc": "2026-03-31T02:53:19.421468+00:00"
+    },
+    {
+      "ticker": "SPY-EXAMPLE-RANGE",
+      "side": "buy_no",
+      "quantity": 23,
+      "entry_probability": 0.7301724407510706,
+      "entry_cost_dollars": 16.793966137274623,
+      "opened_at_utc": "2026-03-31T02:53:19.505283+00:00"
+    }
+  ]
+}

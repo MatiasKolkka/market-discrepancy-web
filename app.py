@@ -11,7 +11,24 @@ from typing import Any
 from flask import Flask, jsonify, render_template, request
 
 BASE_DIR = Path(__file__).resolve().parent
-SCANNER_DIR = BASE_DIR.parent / "market-discrepancy-scanner"
+
+
+def _resolve_scanner_dir() -> Path:
+    configured = os.getenv("SCANNER_DIR", "").strip()
+    if configured:
+        return Path(configured).expanduser().resolve()
+
+    candidates = [
+        BASE_DIR.parent / "market-discrepancy-scanner",
+        BASE_DIR / "market-discrepancy-scanner",
+    ]
+    for path in candidates:
+        if path.exists():
+            return path
+    return candidates[0]
+
+
+SCANNER_DIR = _resolve_scanner_dir()
 DIAG_DIR = SCANNER_DIR / "data" / "diagnostics"
 DATA_DIR = SCANNER_DIR / "data"
 SIGNALS_PATH = DATA_DIR / "signals.jsonl"

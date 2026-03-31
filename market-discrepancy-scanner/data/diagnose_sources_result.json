@@ -1,0 +1,377 @@
+{
+  "generated_at_utc": "2026-03-31T01:13:26.115682+00:00",
+  "training_symbol": "SPY",
+  "requested_hints": [
+    "SPY",
+    "QQQ",
+    "IWM",
+    "DIA",
+    "NDX",
+    "SPX"
+  ],
+  "attempt_count": 30,
+  "best_attempt_index": -1,
+  "best_pre_score_pass": -1,
+  "sources": [
+    {
+      "params": {
+        "limit": 200,
+        "search": "SPY"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&search=SPY (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "query": "SPY"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&query=SPY (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "title": "SPY"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&title=SPY (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "event_ticker": "SPY"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&event_ticker=SPY (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "ticker": "SPY"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&ticker=SPY (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "underlying": "SPY"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&underlying=SPY (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "search": "QQQ"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&search=QQQ (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "query": "QQQ"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&query=QQQ (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "title": "QQQ"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&title=QQQ (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "event_ticker": "QQQ"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&event_ticker=QQQ (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "ticker": "QQQ"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&ticker=QQQ (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "underlying": "QQQ"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&underlying=QQQ (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "search": "IWM"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&search=IWM (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "query": "IWM"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&query=IWM (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "title": "IWM"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&title=IWM (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "event_ticker": "IWM"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&event_ticker=IWM (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "ticker": "IWM"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&ticker=IWM (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "underlying": "IWM"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&underlying=IWM (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "search": "DIA"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&search=DIA (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "query": "DIA"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&query=DIA (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "title": "DIA"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&title=DIA (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "event_ticker": "DIA"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&event_ticker=DIA (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "ticker": "DIA"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&ticker=DIA (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "underlying": "DIA"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&underlying=DIA (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "search": "NDX"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&search=NDX (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "query": "NDX"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&query=NDX (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "title": "NDX"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&title=NDX (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "event_ticker": "NDX"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&event_ticker=NDX (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "ticker": "NDX"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&ticker=NDX (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    },
+    {
+      "params": {
+        "limit": 200,
+        "underlying": "NDX"
+      },
+      "raw_count": 0,
+      "signal_candidates": 0,
+      "template_block": 0,
+      "quality_block": 0,
+      "pre_score_pass": 0,
+      "error": "SSLError: HTTPSConnectionPool(host='api.elections.kalshi.com', port=443): Max retries exceeded with url: /trade-api/v2/markets?limit=200&underlying=NDX (Caused by SSLError(SSLError(1, '[SSL: SSLV3_ALERT_HANDSHAKE_FAILURE] sslv3 alert handshake failure (_ssl.c:1028)')))"
+    }
+  ]
+}

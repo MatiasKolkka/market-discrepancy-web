@@ -1,0 +1,41 @@
+{
+  "timestamp_utc": "2026-03-31T02:53:19.506264+00:00",
+  "scanned": 3,
+  "blocked": 3,
+  "passed": 0,
+  "by_reason": {
+    "Paper mode active.": 3
+  },
+  "examples_by_reason": {
+    "Paper mode active.": [
+      {
+        "ticker": "SPY-EXAMPLE-ABOVE",
+        "event_name": "Will SPY close above 550 this week?"
+      },
+      {
+        "ticker": "QQQ-EXAMPLE-BELOW",
+        "event_name": "Will QQQ close below 430 this week?"
+      },
+      {
+        "ticker": "SPY-EXAMPLE-RANGE",
+        "event_name": "Will SPY close between 540 and 560 this week?"
+      }
+    ]
+  },
+  "metadata": {
+    "fetch": {
+      "mode": "override"
+    },
+    "payload_profile": {
+      "raw_total": 3,
+      "with_ticker": 3,
+      "with_title": 3,
+      "with_yes_price_like": 3,
+      "with_yes_bid_like": 3,
+      "with_yes_ask_like": 3,
+      "with_yes_bid_dollars": 0,
+      "with_yes_ask_dollars": 0
+    },
+    "signal_candidates": 3
+  }
+}

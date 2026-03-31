@@ -301,6 +301,16 @@ def api_snapshot() -> Any:
     return jsonify(out)
 
 
+@app.get("/health")
+def health() -> Any:
+    return jsonify({"ok": True, "service": APP_DISPLAY_NAME}), 200
+
+
+@app.get("/api/health")
+def api_health() -> Any:
+    return jsonify({"ok": True, "service": APP_DISPLAY_NAME}), 200
+
+
 @app.get("/api/actions")
 def api_actions() -> Any:
     return jsonify({"actions": sorted(ALLOWED_ACTIONS.keys()), "auth": _auth_status()})

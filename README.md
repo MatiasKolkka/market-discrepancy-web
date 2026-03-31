@@ -41,6 +41,8 @@ python app.py
 - `POST /api/run/<action>`: run an allowed scanner action.
 - `GET /api/recommendations`: current recommendation list.
 - `POST /api/recommendations/scan`: run a live scan and return refreshed recommendations.
+- `GET /health`: host/platform health check.
+- `GET /api/health`: API health check.
 
 Supported actions:
 - `scan-once`
@@ -85,6 +87,9 @@ Recommended host: Render (supports Flask + custom domains).
 4. In Render, open `Settings -> Custom Domains` and add your domain.
 5. In your DNS provider, add the CNAME/A record Render gives you.
 6. Wait for SSL to issue; then your custom URL name is live.
+
+Detailed checklist:
+- See [CUSTOM_DOMAIN_GUIDE.md](CUSTOM_DOMAIN_GUIDE.md)
 
 ## Auth (Recommended)
 Set an operator token to protect action endpoints:

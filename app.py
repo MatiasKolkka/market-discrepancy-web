@@ -302,6 +302,17 @@ def _run_scanner_action(action: str, settled_file: str | None = None) -> dict[st
     if action not in ALLOWED_ACTIONS:
         return {"ok": False, "error": f"Unsupported action: {action}"}
 
+    if not SCANNER_DIR.exists():
+        return {
+            "ok": False,
+            "error": (
+                "Scanner backend directory not found. "
+                "Deploy with both market-discrepancy-web and market-discrepancy-scanner folders "
+                "or provide diagnostics report files to this service."
+            ),
+            "scanner_dir": str(SCANNER_DIR),
+        }
+
     spec = ALLOWED_ACTIONS[action]
     mode = str(spec["mode"])
     flags = [str(item) for item in spec.get("flags", [])]
@@ -310,14 +321,21 @@ def _run_scanner_action(action: str, settled_file: str | None = None) -> dict[st
     if settled_file:
         cmd.extend(["--settled-file", settled_file])
 
-    proc = subprocess.run(
-        cmd,
-        cwd=str(SCANNER_DIR),
-        text=True,
-        capture_output=True,
-        timeout=300,
-        check=False,
-    )
+    try:
+        proc = subprocess.run(
+            cmd,
+            cwd=str(SCANNER_DIR),
+            text=True,
+            capture_output=True,
+            timeout=300,
+            check=False,
+        )
+    except Exception as exc:
+        return {
+            "ok": False,
+            "error": f"Failed to run scanner action: {exc}",
+            "command": cmd,
+        }
     return {
         "ok": proc.returncode == 0,
         "returncode": proc.returncode,

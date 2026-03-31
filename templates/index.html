@@ -41,7 +41,7 @@
       </section>
 
       <section id="recommendation-list" class="grid cards recommendations">
-        {% for item in data.recommendations.items %}
+        {% for item in data.recommendations["items"] %}
         <article class="card recommendation">
           <p class="pill">{{ item.side|replace('buy_', '')|upper }}</p>
           <h3>{{ item.event_name }}</h3>
@@ -66,9 +66,11 @@
         <button id="refresh-btn">Refresh Snapshot</button>
       </section>
 
-      <section class="card actions">
-        <h3>Operator Tools</h3>
-        <p class="hint">Administrative controls for maintenance and diagnostics.</p>
+      <details class="card actions" id="operator-tools">
+        <summary>
+          <strong>Operator Tools</strong>
+          <span class="hint">Administrative controls for maintenance and diagnostics.</span>
+        </summary>
         <div class="auth-row">
           <input id="token-input" type="password" placeholder="Operator token" autocomplete="off" />
           <button id="save-token-btn" type="button">Save Token</button>
@@ -83,7 +85,7 @@
           <button class="action-btn" data-action="monte-carlo-journal">Run Monte Carlo Journal</button>
         </div>
         <pre id="action-log">Action output will appear here.</pre>
-      </section>
+      </details>
 
       <section class="grid cards">
         <article class="card">
@@ -148,7 +150,7 @@
         <h3>How We Calculated These Odds (Optional)</h3>
         <p class="hint">Advanced details for users who want the model math.</p>
         <div id="math-details">
-          {% for item in data.recommendations.items %}
+          {% for item in data.recommendations["items"] %}
           <details>
             <summary>{{ item.ticker }} - {{ item.side }}</summary>
             <ul>

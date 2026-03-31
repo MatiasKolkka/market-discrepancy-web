@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: market-discrepancy-web
+    env: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: waitress-serve --host=0.0.0.0 --port=$PORT app:app
+    autoDeploy: true
+    envVars:
+      - key: ACTION_API_TOKEN
+        sync: false
+      - key: SCANNER_PYTHON
+        value: /opt/render/project/src/.venv/bin/python
+      - key: APP_DISPLAY_NAME
+        value: Market Scanner Signals
+      - key: PUBLIC_SITE_URL
+        value: https://market-scanner-signals.example.com

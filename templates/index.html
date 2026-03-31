@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ data.app_display_name }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Syne:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+
+    <main class="shell">
+      <header class="hero">
+        <p class="eyebrow">Operator Dashboard</p>
+        <h1>{{ data.app_display_name }}</h1>
+        <p class="subtitle">Live readout of diagnostics and evidence progression from your backend engine.</p>
+      </header>
+
+      <section class="card recommendation-head">
+        <div class="recommendation-head-row">
+          <div>
+            <h2>What To Bet Right Now</h2>
+            <p class="hint">We scan markets and show the highest-confidence bets with suggested size.</p>
+          </div>
+          <button id="scan-recommendations-btn" class="action-btn">Scan Live Markets</button>
+        </div>
+      </section>
+
+      <section id="recommendation-list" class="grid cards recommendations">
+        {% for item in data.recommendations.items %}
+        <article class="card recommendation">
+          <p class="pill">{{ item.side|replace('buy_', '')|upper }}</p>
+          <h3>{{ item.event_name }}</h3>
+          <p class="metric">{{ item.quantity }} contracts</p>
+          <p class="label">Estimated cost: ${{ '%.2f'|format(item.estimated_cost_dollars) }}</p>
+          <p class="hint">{{ item.instruction }}</p>
+        </article>
+        {% endfor %}
+      </section>
+
+      <section class="status-banner status-{{ data.decision|lower }}">
+        <div>
+          <h2>Decision: {{ data.decision }}</h2>
+          <p>
+            Grade: <strong>{{ data.grade_status }}</strong>
+            {% if data.grade_score is not none %}
+            | Score: <strong>{{ '%.2f'|format(data.grade_score) }}</strong>
+            {% endif %}
+            | Drift: <strong>{{ data.drift_detected }}</strong>
+          </p>
+        </div>
+        <button id="refresh-btn">Refresh Snapshot</button>
+      </section>
+
+      <section class="card actions">
+        <h3>Run Backend Actions</h3>
+        <p class="hint">Kick off scanner workflows directly from the dashboard.</p>
+        <div class="auth-row">
+          <input id="token-input" type="password" placeholder="Operator token" autocomplete="off" />
+          <button id="save-token-btn" type="button">Save Token</button>
+          <button id="clear-token-btn" type="button">Clear Token</button>
+          <span id="auth-status">Auth: unknown</span>
+        </div>
+        <div class="action-row">
+          <button class="action-btn" data-action="evidence-cycle">Run Evidence Cycle</button>
+          <button class="action-btn" data-action="health-dashboard-refresh">Refresh Health Dashboard</button>
+          <button class="action-btn" data-action="drift-monitor">Run Drift Monitor</button>
+          <button class="action-btn" data-action="settled-walk-forward">Run Settled Walk-Forward</button>
+          <button class="action-btn" data-action="monte-carlo-journal">Run Monte Carlo Journal</button>
+        </div>
+        <pre id="action-log">Action output will appear here.</pre>
+      </section>
+
+      <section class="grid cards">
+        <article class="card">
+          <h3>Evidence Progress</h3>
+          <p class="metric">{{ data.empirical_trade_count }}</p>
+          <p class="label">Settled trades collected</p>
+          <p class="hint">Need {{ data.needed_trades }} more for grade gate</p>
+        </article>
+
+        <article class="card">
+          <h3>Walk-Forward Readiness</h3>
+          <p class="metric">{{ data.walk_forward_status }}</p>
+          <p class="label">Current walk-forward status</p>
+          <p class="hint">Need {{ data.needed_wf_rows }} more settled rows</p>
+        </article>
+
+        <article class="card">
+          <h3>Open Risk</h3>
+          <p class="metric">{{ data.open_positions }}</p>
+          <p class="label">Open paper positions</p>
+          <p class="hint">Unrealized PnL: {{ '%.2f'|format(data.total_unrealized_pnl or 0.0) }}</p>
+        </article>
+      </section>
+
+      <section class="grid split">
+        <article class="card large">
+          <h3>Failure Reasons</h3>
+          {% if data.failure_reasons %}
+          <ul>
+            {% for reason in data.failure_reasons %}
+            <li>{{ reason }}</li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p>No current blockers.</p>
+          {% endif %}
+        </article>
+
+        <article class="card large">
+          <h3>Gate Checks</h3>
+          <ul>
+            {% for key, value in data.checks.items() %}
+            <li>{{ key }}: <strong>{{ value }}</strong></li>
+            {% endfor %}
+          </ul>
+        </article>
+      </section>
+
+      <section class="grid split charts">
+        <article class="card large">
+          <h3>LLN Convergence</h3>
+          <canvas id="lln-chart" height="160"></canvas>
+        </article>
+
+        <article class="card large">
+          <h3>Risk + Stability</h3>
+          <canvas id="risk-chart" height="160"></canvas>
+        </article>
+      </section>
+
+      <section class="card math-section">
+        <h3>How We Calculated These Odds (Optional)</h3>
+        <p class="hint">Advanced details for users who want the model math.</p>
+        <div id="math-details">
+          {% for item in data.recommendations.items %}
+          <details>
+            <summary>{{ item.ticker }} - {{ item.side }}</summary>
+            <ul>
+              <li>Market probability: {{ item.market_probability }}</li>
+              <li>Model probability: {{ item.model_probability }}</li>
+              <li>Net edge: {{ item.net_edge }}</li>
+              <li>Confidence: {{ item.confidence }}</li>
+              <li>Estimated value: ${{ '%.2f'|format(item.estimated_value_dollars) }}</li>
+              <li>{{ item.math.edge_formula }}</li>
+              <li>{{ item.math.cost_formula }}</li>
+              <li>{{ item.math.ev_formula }}</li>
+            </ul>
+          </details>
+          {% endfor %}
+        </div>
+      </section>
+
+      <footer>
+        <p>Public URL: {{ data.public_site_url }}</p>
+        <p>Data source: ../market-discrepancy-scanner/data/diagnostics</p>
+      </footer>
+    </main>
+
+    <script id="snapshot-data" type="application/json">{{ data|tojson }}</script>
+    <script src="/static/script.js"></script>
+  </body>
+</html>

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+from datetime import datetime, timezone
 from pathlib import Path
 import subprocess
 import sys
@@ -25,7 +26,9 @@ REPORT_FILES = {
     "settled_walk_forward": DIAG_DIR / "settled_walk_forward_report.json",
     "drift": DIAG_DIR / "drift_report.json",
     "unrealized": DIAG_DIR / "unrealized_pnl_report.json",
+    "recommendations": DIAG_DIR / "recommendations_report.json",
 }
+RECOMMENDATIONS_MAX_AGE_MINUTES = int(os.getenv("RECOMMENDATIONS_MAX_AGE_MINUTES", "240"))
 
 ALLOWED_ACTIONS: dict[str, dict[str, Any]] = {
     "scan-once": {"mode": "scan-once", "flags": []},
@@ -91,6 +94,17 @@ def _read_json(path: Path) -> dict[str, Any]:
     except Exception:
         return {}
     return payload if isinstance(payload, dict) else {}
+
+
+def _minutes_since_iso(ts: str) -> float | None:
+    try:
+        stamp = datetime.fromisoformat(ts)
+    except Exception:
+        return None
+    if stamp.tzinfo is None:
+        stamp = stamp.replace(tzinfo=timezone.utc)
+    age = datetime.now(timezone.utc) - stamp.astimezone(timezone.utc)
+    return max(0.0, age.total_seconds() / 60.0)
 
 
 def _build_snapshot() -> dict[str, Any]:
@@ -179,7 +193,7 @@ def _read_jsonl(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def _build_recommendations(limit: int = 8) -> dict[str, Any]:
+def _build_recommendations_from_logs(limit: int = 8) -> dict[str, Any]:
     signal_rows = _read_jsonl(SIGNALS_PATH)
     trade_rows = _read_jsonl(PAPER_TRADES_PATH)
 
@@ -246,11 +260,42 @@ def _build_recommendations(limit: int = 8) -> dict[str, Any]:
     return {
         "count": len(recs),
         "items": recs,
+        "generated_at_utc": None,
+        "is_fresh": False,
+        "source_kind": "log_fallback",
         "source": {
             "signals_path": str(SIGNALS_PATH.relative_to(SCANNER_DIR)),
             "paper_trades_path": str(PAPER_TRADES_PATH.relative_to(SCANNER_DIR)),
         },
     }
+
+
+def _build_recommendations(limit: int = 8) -> dict[str, Any]:
+    report = _read_json(REPORT_FILES["recommendations"])
+    if report:
+        items = report.get("items") if isinstance(report.get("items"), list) else []
+        generated = str(report.get("generated_at_utc") or "")
+        age_mins = _minutes_since_iso(generated) if generated else None
+        is_fresh = bool(age_mins is not None and age_mins <= max(1, RECOMMENDATIONS_MAX_AGE_MINUTES))
+        normalized: list[dict[str, Any]] = []
+        for row in items[: max(1, limit)]:
+            if not isinstance(row, dict):
+                continue
+            normalized.append(row)
+
+        return {
+            "count": len(normalized),
+            "items": normalized,
+            "generated_at_utc": generated,
+            "age_minutes": age_mins,
+            "is_fresh": is_fresh,
+            "source_kind": "recommendations_report",
+            "source": {
+                "recommendations_path": str(REPORT_FILES["recommendations"].relative_to(SCANNER_DIR)),
+            },
+        }
+
+    return _build_recommendations_from_logs(limit=limit)
 
 
 def _run_scanner_action(action: str, settled_file: str | None = None) -> dict[str, Any]:

@@ -19,16 +19,22 @@
 
     <main class="shell">
       <header class="hero">
-        <p class="eyebrow">Operator Dashboard</p>
+        <p class="eyebrow">Signals Platform</p>
         <h1>{{ data.app_display_name }}</h1>
-        <p class="subtitle">Live readout of diagnostics and evidence progression from your backend engine.</p>
+        <p class="subtitle">Actionable market picks in plain language, with advanced math only if you want it.</p>
       </header>
 
       <section class="card recommendation-head">
         <div class="recommendation-head-row">
           <div>
             <h2>What To Bet Right Now</h2>
-            <p class="hint">We scan markets and show the highest-confidence bets with suggested size.</p>
+            <p class="hint">We scan available markets, rank expected edge, and show suggested bet size.</p>
+            <p class="hint small">
+              Source: {{ data.recommendations.source_kind }}
+              {% if data.recommendations.generated_at_utc %}
+              | generated {{ data.recommendations.generated_at_utc }}
+              {% endif %}
+            </p>
           </div>
           <button id="scan-recommendations-btn" class="action-btn">Scan Live Markets</button>
         </div>
@@ -61,8 +67,8 @@
       </section>
 
       <section class="card actions">
-        <h3>Run Backend Actions</h3>
-        <p class="hint">Kick off scanner workflows directly from the dashboard.</p>
+        <h3>Operator Tools</h3>
+        <p class="hint">Administrative controls for maintenance and diagnostics.</p>
         <div class="auth-row">
           <input id="token-input" type="password" placeholder="Operator token" autocomplete="off" />
           <button id="save-token-btn" type="button">Save Token</button>

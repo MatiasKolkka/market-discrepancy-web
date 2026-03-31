@@ -24,6 +24,10 @@ body {
   margin: 0 auto;
   padding: 3rem 0 4rem;
   position: relative;
+.hint.small {
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
   z-index: 1;
 }
 
@@ -38,6 +42,7 @@ body {
 .eyebrow {
   color: var(--accent);
   font-weight: 700;
+  background: rgba(244, 241, 236, 0.88);
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -150,6 +155,9 @@ button:hover {
 .action-row {
   display: flex;
   flex-wrap: wrap;
+#scan-recommendations-btn {
+  background: linear-gradient(120deg, #0f766e, #116e84);
+}
   gap: 0.6rem;
   margin-top: 0.6rem;
 }
@@ -157,6 +165,10 @@ button:hover {
 .auth-row {
   margin-top: 0.5rem;
   display: flex;
+.recommendation h3 {
+  margin-top: 0.45rem;
+  min-height: 3.2rem;
+}
   flex-wrap: wrap;
   gap: 0.5rem;
   align-items: center;
